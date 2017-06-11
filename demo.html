@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <title>Toy blockchain</title>
+    <style>
+
+      html {
+        font-family: sans-serif;
+        background-color: #fdfdfd;
+        color: #111;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: row;
+        width: 100vw;
+      }
+
+      .box {
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        padding: 30px;
+        margin: 30px;
+        border: 2px solid black;
+        max-width: 500px;
+      }
+
+      input {
+        height: 30px;
+        width: 400px;
+        margin-bottom: 10px;
+      }
+
+      button {
+        width: 100px;
+        height: 40px;
+      }
+    </style>
+  </head>
+  <body style='margin: 40px'>
+    <div style='width: 100vw;'>
+      <h1 style='margin-left: 30px;'>Blockchain demo<h1>
+    </div>
+
+    <div class='container'>
+    <div class='box'>
+      <h2>Add to the blockchain!</h2>
+      <input id='newBlock' />
+      <button onClick='newBlock()'>Create block</button>
+
+      <br>
+
+      <h2>Encounter new chain</h2>
+      <input id='newChain' placeholder='Paste a serialized chain here' />
+      <button onClick='newChain()'>Encounter chain</button>
+    </div>
+
+    <div class='box'>
+      <h2>What's in the blockchain:</h2>
+      <p id='chainValues'></p>
+      <p id='serializedChain' style='font-family: monospace;'></p>
+    </div>
+  </div>
+
+    <script src='./blockchain.js'></script>
+    <script>
+      var client = blockChainClient()
+
+      function updateDisplay() {
+        document.getElementById('serializedChain').innerHTML = client.serializeChain()
+        document.getElementById('chainValues').innerHTML = client.read()
+      }
+
+      function newBlock() {
+        var content = document.getElementById('newBlock').value
+        client.write(content)
+        updateDisplay()
+      }
+
+      function newChain() {
+        var chain = document.getElementById('newChain').value
+        client.encounterNewChain(chain)
+        updateDisplay()
+      }
+
+      updateDisplay()
+    </script>
+  </body>
+</html>
